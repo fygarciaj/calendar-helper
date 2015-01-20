@@ -2,10 +2,11 @@
 
 namespace Stevebauman\CalendarHelper\Drivers;
 
+use Stevebauman\CalendarHelper\Exceptions\KeyNotFoundException;
+use Illuminate\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Stevebauman\CalendarHelper\Objects\Attendee;
 use Stevebauman\CalendarHelper\Objects\Event;
-use Stevebauman\CalendarHelper\Drivers\DriverInterface;
 
 class Google implements DriverInterface {
 
@@ -56,7 +57,21 @@ class Google implements DriverInterface {
         $this->applicationName = config('calendar-helper::google.application_name');
         $this->serviceAccountName = config('calendar-helper::google.service_account_name');
         $this->scopes = config('calendar-helper::google.scopes');
-        $this->key = File::get(config('calendar-helper::google.key'));
+
+        try {
+
+            $this->key = File::get(config('calendar-helper::google.key'));
+
+        } catch(FileNotFoundException $e) {
+
+            $message = trans('calendar-helper::exceptions.KeyNotFoundException', array(
+                'path' => config('calendar-helper::google.key'),
+            ));
+
+            throw new KeyNotFoundException($message);
+
+        }
+
 
         $this->setUp();
     }

@@ -10,7 +10,13 @@ class CalendarHelperServiceProvider extends ServiceProvider {
 	 * @var bool
 	 */
 	protected $defer = false;
-        
+
+	public function boot()
+	{
+		$this->package('stevebauman/calendar-helper');
+		parent::boot();
+	}
+
 	/**
 	 * Register the service provider.
 	 *
@@ -18,8 +24,6 @@ class CalendarHelperServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-            $this->package('stevebauman/calendar-helper');
-            
             $this->app['calendar-helper'] = $this->app->share(function($app)
             {
                     return new CalendarHelper();
