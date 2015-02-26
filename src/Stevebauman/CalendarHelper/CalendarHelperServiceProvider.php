@@ -11,9 +11,13 @@ class CalendarHelperServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
+	/**
+	 * Register the package in the boot method https://github.com/laravel/framework/issues/6
+	 */
 	public function boot()
 	{
 		$this->package('stevebauman/calendar-helper');
+
 		parent::boot();
 	}
 
@@ -24,12 +28,12 @@ class CalendarHelperServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-            $this->app['calendar-helper'] = $this->app->share(function($app)
-            {
-                    return new CalendarHelper();
-            });
-            
-            include __DIR__ .'/../../helpers.php';
+		$this->app['calendar-helper'] = $this->app->share(function($app)
+		{
+				return new CalendarHelper();
+		});
+
+		include __DIR__ .'/../../helpers.php';
 	}
 
 	/**
