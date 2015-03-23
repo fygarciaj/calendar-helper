@@ -448,7 +448,6 @@ class Google implements DriverInterface
             'status' => $googleEvent->getStatus(),
             'start' => $start,
             'end' => $end,
-            'location' => $googleEvent->getLocation(),
             'all_day' => $allDay,
             'rrule' => ($googleEvent->getRecurrence() ? $googleEvent->getRecurrence()[0] : NULL),
             'isRecurrence' => ($googleEvent->recurringEventId ? true : false)

@@ -1,9 +1,15 @@
-<?php namespace Stevebauman\CalendarHelper;
+<?php
+
+namespace Stevebauman\CalendarHelper;
 
 use Illuminate\Support\ServiceProvider;
 
-class CalendarHelperServiceProvider extends ServiceProvider {
-
+/**
+ * Class CalendarHelperServiceProvider
+ * @package Stevebauman\CalendarHelper
+ */
+class CalendarHelperServiceProvider extends ServiceProvider
+{
 	/**
 	 * Indicates if loading of the provider is deferred.
 	 *
@@ -30,7 +36,7 @@ class CalendarHelperServiceProvider extends ServiceProvider {
 	{
 		$this->app['calendar-helper'] = $this->app->share(function($app)
 		{
-				return new CalendarHelper();
+		    return new CalendarHelper;
 		});
 
 		include __DIR__ .'/../../helpers.php';

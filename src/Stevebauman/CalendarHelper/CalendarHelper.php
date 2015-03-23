@@ -4,8 +4,12 @@ namespace Stevebauman\CalendarHelper;
 
 use Stevebauman\CalendarHelper\Drivers\Google;
 
-class CalendarHelper {
-
+/**
+ * Class CalendarHelper
+ * @package Stevebauman\CalendarHelper
+ */
+class CalendarHelper
+{
     /**
      * Returns a new Google driver instance
      *
@@ -17,5 +21,4 @@ class CalendarHelper {
 
         return $google;
     }
-
 }
