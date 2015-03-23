@@ -2,11 +2,11 @@
 
 namespace Stevebauman\CalendarHelper\Objects;
 
-use Stevebauman\CalendarHelper\Objects\AbstractApiObject;
+use Stevebauman\Viewer\Traits\ViewableTrait;
 
-class Attendee extends AbstractApiObject {
-    
-    use \Stevebauman\Viewer\ViewableTrait;
+class Attendee extends AbstractApiObject
+{
+    use ViewableTrait;
     
     /*
      * Stores the event object the attendee is connected to
@@ -21,5 +21,4 @@ class Attendee extends AbstractApiObject {
         
         $this->fill($attributes);
     }
-    
 }

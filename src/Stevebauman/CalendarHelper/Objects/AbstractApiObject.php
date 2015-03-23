@@ -2,8 +2,8 @@
 
 namespace Stevebauman\CalendarHelper\Objects;
 
-abstract class AbstractApiObject {
-    
+abstract class AbstractApiObject
+{
     /*
      * Stores the viewer object of the event
      */
@@ -44,7 +44,7 @@ abstract class AbstractApiObject {
      */
     public function __set($key, $value)
     {
-        return $this->setAttribute($key, $value);
+        $this->setAttribute($key, $value);
     }
     
     /**
@@ -54,12 +54,12 @@ abstract class AbstractApiObject {
      */
     public function fill(array $attributes = array())
     {
-        foreach($attributes as $key => $value) {
-            
-            if($this->isFillable($key)) {
+        foreach($attributes as $key => $value)
+        {
+            if($this->isFillable($key))
+            {
                 $this->setAttribute($key, $value);
             }
-            
         }
     }
     
@@ -72,9 +72,7 @@ abstract class AbstractApiObject {
      */
     public function isFillable($key)
     {
-        if(array_key_exists($key, $this->fillable)) {
-            return true;
-        }
+        if(array_key_exists($key, $this->fillable)) return true;
         
         return false;
     }
@@ -87,7 +85,8 @@ abstract class AbstractApiObject {
      */
     public function getAttribute($key)
     {
-        if (array_key_exists($key, $this->attributes)) {
+        if (array_key_exists($key, $this->attributes))
+        {
             return $this->attributes[$key];
         }
     }

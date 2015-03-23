@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\File;
 use Stevebauman\CalendarHelper\Objects\Attendee;
 use Stevebauman\CalendarHelper\Objects\Event;
 
-class Google implements DriverInterface {
-
+/**
+ * Class Google
+ * @package Stevebauman\CalendarHelper\Drivers
+ */
+class Google implements DriverInterface
+{
     /*
      * Holds the google client object
      */
@@ -58,20 +62,17 @@ class Google implements DriverInterface {
         $this->serviceAccountName = config('calendar-helper::google.service_account_name');
         $this->scopes = config('calendar-helper::google.scopes');
 
-        try {
-
+        try
+        {
             $this->key = File::get(config('calendar-helper::google.key'));
-
-        } catch(FileNotFoundException $e) {
-
+        } catch(FileNotFoundException $e)
+        {
             $message = trans('calendar-helper::exceptions.KeyNotFoundException', array(
                 'path' => config('calendar-helper::google.key'),
             ));
 
             throw new KeyNotFoundException($message);
-
         }
-
 
         $this->setUp();
     }
@@ -119,9 +120,7 @@ class Google implements DriverInterface {
      */
     public function setCalendarId($id)
     {
-        if($id) {
-            $this->calendarId = $id;
-        }
+        if($id) $this->calendarId = $id;
 
         return $this;
     }
@@ -136,7 +135,8 @@ class Google implements DriverInterface {
      */
     public function event($apiId)
     {
-        try {
+        try
+        {
             $googleEvent = $this->service->events->get($this->calendarId, $apiId);
 
             /*
@@ -145,18 +145,20 @@ class Google implements DriverInterface {
              * 
              * This is so a correct response is given if preparing a batch request
              */
-            if($googleEvent instanceof \Google_Http_Request){
+            if($googleEvent instanceof \Google_Http_Request)
+            {
                 return $googleEvent;
-            } else {
+            } else
+            {
                 return $this->createEventObject($googleEvent);
             }
 
-        } catch (\Google_Service_Exception $e) {
+        } catch (\Google_Service_Exception $e)
+        {
             /*
              * Not Found
              */
             return false;
-
         }
     }
 
@@ -164,7 +166,7 @@ class Google implements DriverInterface {
      * Retrieves all events on the given calendar ID
      *
      * @param array $params
-     * @return type
+     * @return array
      */
     public function events(array $params = array())
     {
@@ -172,10 +174,9 @@ class Google implements DriverInterface {
 
         $events = array();
 
-        foreach($googleEvents as $googleEvent) {
-
+        foreach($googleEvents as $googleEvent)
+        {
             $events[] = $this->createEventObject($googleEvent);
-
         }
 
         return $events;
@@ -192,17 +193,16 @@ class Google implements DriverInterface {
     {
         $googleEvents = $this->service->events->instances($this->calendarId, $apiId, $params);
 
-        if($googleEvents instanceof \Google_Http_Request){
-
+        if($googleEvents instanceof \Google_Http_Request)
+        {
             return $googleEvents;
-
-        } else {
+        } else
+        {
             $events = array();
 
-            foreach($googleEvents->getItems() as $googleEvent) {
-
+            foreach($googleEvents->getItems() as $googleEvent)
+            {
                 $events[] = $this->createEventObject($googleEvent);
-
             }
 
             return $events;
@@ -213,8 +213,9 @@ class Google implements DriverInterface {
      * Retrieves events by the specified IDs
      *
      * @param array $apiIds
-     * @param boolean $withRecurrences
-     * @return object Collection
+     * @param bool $withRecurrences
+     * @param array $recurParams
+     * @return array
      */
     public function specificEvents(array $apiIds = array(), $withRecurrences = false, $recurParams = array())
     {
@@ -228,10 +229,10 @@ class Google implements DriverInterface {
          * For each google API id, add each event request into a batch, then
          * execute it
          */
-        if(count($apiIds) > 0) {
-
-            foreach($apiIds as $apiId) {
-
+        if(count($apiIds) > 0)
+        {
+            foreach($apiIds as $apiId)
+            {
                 $request = $this->event($apiId);
 
                 $batch->add($request);
@@ -239,16 +240,15 @@ class Google implements DriverInterface {
                 /*
                  * Request the recurrences of the events if set to true
                  */
-                if($withRecurrences) {
+                if($withRecurrences)
+                {
                     $request = $this->recurrences($apiId, $recurParams);
 
                     $batch->add($request);
                 }
-
             }
 
             $response = $batch->execute();
-
         }
 
         $events = array();
@@ -257,46 +257,40 @@ class Google implements DriverInterface {
          * For each retrieved google event, convert the google object into
          * an event object
          */
-        if(count($response) > 0) {
-
-            foreach($response as $googleEvent) {
-
+        if(count($response) > 0)
+        {
+            foreach($response as $googleEvent)
+            {
                 /*
                  * If recurrences are included, we need to remove the first recurrence
                  * of the event since the parent is included in the array
                  */
-                if($googleEvent instanceof \Google_Service_Calendar_Events) {
-
+                if($googleEvent instanceof \Google_Service_Calendar_Events)
+                {
                     $isFirst = true;
 
-                    foreach($googleEvent as $recurrence) {
-
+                    foreach($googleEvent as $recurrence)
+                    {
                         /*
                          * Make sure we skip the first recurrence
                          */
-                        if($isFirst) {
+                        if($isFirst)
+                        {
                             $isFirst = false;
                             continue;
                         }
 
                         $events[] = $this->createEventObject($recurrence);
-
                     }
 
-                } elseif($googleEvent instanceof \Google_Service_Calendar_Event) {
-
+                } elseif($googleEvent instanceof \Google_Service_Calendar_Event)
+                {
                     $events[] = $this->createEventObject($googleEvent);
-
-                } elseif($googleEvent instanceof \Stevebauman\CalendarHelper\Objects\Event) {
-
+                } elseif($googleEvent instanceof \Stevebauman\CalendarHelper\Objects\Event)
+                {
                     $events[] = $googleEvent;
-
-                } else {
-
                 }
-
             }
-
         }
 
         return $events;
@@ -339,7 +333,8 @@ class Google implements DriverInterface {
         /*
          * Set Recurrence Rule, make sure it's not empty
          */
-        if($event->rrule) {
+        if($event->rrule)
+        {
             $googleEvent->setRecurrence(array($event->rrule));
         }
 
@@ -383,7 +378,8 @@ class Google implements DriverInterface {
         /*
          * Set Recurrence Rule, make sure it's not empty
          */
-        if($event->rrule) {
+        if($event->rrule)
+        {
             $event->apiObject->setRecurrence(array($event->rrule));
         }
 
@@ -403,12 +399,13 @@ class Google implements DriverInterface {
      */
     public function deleteEvent($eventId)
     {
-        try {
-
+        try
+        {
             $this->service->events->delete($this->calendarId, $eventId);
 
             return true;
-        } catch(\Google_Service_Exception $e) {
+        } catch(\Google_Service_Exception $e)
+        {
             //Catch Not Found exception if calendar event does not exist
             return false;
         }
@@ -426,18 +423,16 @@ class Google implements DriverInterface {
          * If dateTime property is set on the google object, 
          * then the event is not all day
          */
-        if($googleEvent->getStart()->dateTime) {
-
+        if($googleEvent->getStart()->dateTime)
+        {
             $allDay = false;
             $start = $googleEvent->getStart()->dateTime;
             $end = $googleEvent->getEnd()->dateTime;
-
-        } else {
-
+        } else
+        {
             $allDay = true;
             $start = $googleEvent->getStart()->date;
             $end = $googleEvent->getEnd()->date;
-
         }
 
         /*
@@ -469,8 +464,10 @@ class Google implements DriverInterface {
         /*
          * Assign each attendee their own object
          */
-        if(count($googleEvent->getAttendees()) > 0) {
-            foreach($googleEvent->getAttendees() as $attendee) {
+        if(count($googleEvent->getAttendees()) > 0)
+        {
+            foreach($googleEvent->getAttendees() as $attendee)
+            {
                 $attendees[] = $this->createAttendeeObject($attendee, $event);
             }
         }
@@ -525,9 +522,11 @@ class Google implements DriverInterface {
          *  - All Day - YYYY-MM-DD
          *  - Not All Day - YYYY-MM-DD\TH:I:S:
          */
-        if($allDay) {
+        if($allDay)
+        {
             $date->setDate($dateTime);
-        } else {
+        } else
+        {
             $date->setDateTime($dateTime);
         }
 
@@ -535,6 +534,4 @@ class Google implements DriverInterface {
 
         return $date;
     }
-
-
 }
