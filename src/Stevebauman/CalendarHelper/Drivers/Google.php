@@ -16,31 +16,43 @@ class Google implements DriverInterface
 {
     /*
      * Holds the google client object
+     *
+     * @var \GoogleClient
      */
     private $client;
 
     /*
      * Holds google service object
+     *
+     * @var \Google_Service_Calendar
      */
     private $service;
 
     /*
      * Holds the google client api key
+     *
+     * @var string
      */
     private $clientId;
 
     /*
      * Holds the google application name
+     *
+     * @var string
      */
     private $applicationName;
 
     /*
      * Holds the google service account name
+     *
+     * @var string
      */
     private $serviceAccountName;
 
     /*
      * Holds the google calendar ID
+     *
+     * @var string
      */
     private $calendarId;
 
@@ -51,6 +63,8 @@ class Google implements DriverInterface
 
     /*
      * Holds the google api scopes
+     *
+     * @var array
      */
     private $scopes;
 
