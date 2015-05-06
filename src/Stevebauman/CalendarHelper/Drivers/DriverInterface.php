@@ -10,7 +10,7 @@ interface DriverInterface {
     
     public function event($apiId);
     
-    public function events(array $params = array());
+    public function events(array $params = []);
     
     public function createEvent(Event $event);
     

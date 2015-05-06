@@ -12,7 +12,7 @@ class Event extends AbstractApiObject
 {
     use ViewableTrait;
 
-    public function __construct(array $attributes = array())
+    public function __construct(array $attributes = [])
     {
         $this->timeZone = config('app.timezone');
 

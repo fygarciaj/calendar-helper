@@ -13,7 +13,7 @@ class Attendee extends AbstractApiObject
      */
     public $event;
     
-    public function __construct(array $attributes = array())
+    public function __construct(array $attributes = [])
     {
         $this->viewer = config('calendar-helper::attendee.viewer');
         

@@ -16,7 +16,6 @@ use Stevebauman\CoreHelper\Services\Service;
  */
 class EventService extends Service
 {
-
     use TableTrait;
 
     public function __construct(CalendarHelper $calendar, TableCollection $collection)
@@ -66,9 +65,10 @@ class EventService extends Service
      * Creates a google batch request for specific event ID's
      *
      * @param array $ids
+     *
      * @return \Stevebauman\EloquentTable\TableCollection
      */
-    public function getOnly($ids = array(), $recurrences = false)
+    public function getOnly($ids = [], $recurrences = false)
     {
         $events = $this->calendar->specificEvents($ids, $recurrences, $this->getRecurringEventsFilter());
 
@@ -86,7 +86,7 @@ class EventService extends Service
     /**
      * Creates a new google calendar event
      *
-     * @return type
+     * @return Event
      */
     public function create()
     {
@@ -107,14 +107,14 @@ class EventService extends Service
             $allDay = false;
         }
 
-        $event = new Event(array(
+        $event = new Event([
             'title' => $this->getInput('title'),
             'location' => $this->getInput('location'),
             'start' => strToRfc3339($start, $allDay),
             'end' => strToRfc3339($end, $allDay, true),
             'all_day' => $allDay,
             'rrule' => $rrule
-        ));
+        ]);
 
         return $this->calendar->createEvent($event);
     }
@@ -271,12 +271,12 @@ class EventService extends Service
         *
         * Recur frequency is mandatory, while other attributes are optional
         */
-        $arrayRule = array(
+        $arrayRule = [
             'FREQ' => $this->getInput('recur_frequency'),
             'BYDAY' => ($this->getInput('recur_days') ? $this->implodeArrayForRule($this->getInput('recur_days')) : NULL),
             'BYMONTH' => ($this->getInput('recur_months') ? $this->implodeArrayForRule($this->getInput('recur_months')) : NULL),
             'UNTIL' => ($this->getInput('recur_until') ? strToRfc2445($this->getInput('recur_until')) : NULL),
-        );
+        ];
 
         return $arrayRule;
     }
@@ -288,7 +288,7 @@ class EventService extends Service
      */
     private function getBaseFilter()
     {
-        $filter = array(
+        $filter = [
             'alwaysIncludeEmail' => $this->getInput('alwaysIncludeEmail', false),
             'maxAttendees' => $this->getInput('maxAttendees'),
             'maxResults' => $this->getInput('maxResults'),
@@ -296,7 +296,7 @@ class EventService extends Service
             'showDeleted' => $this->getInput('showDeleted', false),
             'timeMin' => $this->getInput('timeMin'),
             'timeMax' => $this->getInput('timeMax'),
-        );
+        ];
 
         return $filter;
     }
@@ -308,10 +308,10 @@ class EventService extends Service
      */
     private function getEventsFilter()
     {
-        $filter = array(
+        $filter = [
             'singleEvents' => $this->getInput('singleEvents', true),
             'orderBy' => $this->getInput('orderBy'),
-        );
+        ];
 
         return array_merge($filter, $this->getBaseFilter());
     }
@@ -323,9 +323,9 @@ class EventService extends Service
      */
     private function getRecurringEventsFilter()
     {
-        $filter = array(
+        $filter = [
             'originalStart' => $this->getInput('originalStart'),
-        );
+        ];
 
         return array_merge($filter, $this->getBaseFilter());
     }
@@ -337,7 +337,7 @@ class EventService extends Service
      * @param array $values
      * @return null OR string
      */
-    private function implodeArrayForRule(array $values = array())
+    private function implodeArrayForRule(array $values = [])
     {
         /*
          * If a value is given, and it's an array, implode the array by comma
@@ -358,7 +358,7 @@ class EventService extends Service
      * @param array $rules
      * @return string
      */
-    private function arrayToRRule(array $rules = array())
+    private function arrayToRRule(array $rules = [])
     {
         $ruleString = '';
 

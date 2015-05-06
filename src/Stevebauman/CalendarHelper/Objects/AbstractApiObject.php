@@ -12,15 +12,17 @@ abstract class AbstractApiObject
     /*
      * Stores the fillable attributes on event
      */
-    protected $fillable = array();
+    protected $fillable = [];
     
     /*
      * Stores the attributes of the event
      */
-    public $attributes = array();
+    public $attributes = [];
     
     /*
      * Stores the Event API object
+     *
+     * @var DriverInterface
      */
     public $apiObject;
     
@@ -28,6 +30,7 @@ abstract class AbstractApiObject
      * Dynamically retrieve the attribute on the current event
      * 
      * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)
@@ -40,6 +43,7 @@ abstract class AbstractApiObject
      * 
      * @param string $key
      * @param mixed $value
+     *
      * @return void
      */
     public function __set($key, $value)
@@ -52,7 +56,7 @@ abstract class AbstractApiObject
      * 
      * @param array $attributes
      */
-    public function fill(array $attributes = array())
+    public function fill(array $attributes = [])
     {
         foreach($attributes as $key => $value)
         {
@@ -64,10 +68,11 @@ abstract class AbstractApiObject
     }
     
     /**
-     * Returns true or false if key trying to be set is available in the event
-     * attributes
+     * Returns true or false if key trying to
+     * be set is available in the event attributes.
      * 
      * @param string $key
+     *
      * @return boolean
      */
     public function isFillable($key)
@@ -78,10 +83,11 @@ abstract class AbstractApiObject
     }
     
     /**
-     * Returns an attribute from the attributes array
+     * Returns an attribute from the attributes array.
      * 
      * @param string $key
-     * @return mixed
+     *
+     * @return mixed|null
      */
     public function getAttribute($key)
     {
@@ -89,6 +95,8 @@ abstract class AbstractApiObject
         {
             return $this->attributes[$key];
         }
+
+        return null;
     }
     
     /**
@@ -101,5 +109,4 @@ abstract class AbstractApiObject
     {
         $this->attributes[$key] = $value;
     }
-    
 }

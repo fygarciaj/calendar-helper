@@ -49,7 +49,7 @@ class CalendarHelperServiceProvider extends ServiceProvider
 	 */
 	public function provides()
 	{
-		return array('calendar-helper');
+		return ['calendar-helper'];
 	}
 
 }
