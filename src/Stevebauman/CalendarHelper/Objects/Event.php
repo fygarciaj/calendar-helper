@@ -3,7 +3,6 @@
 namespace Stevebauman\CalendarHelper\Objects;
 
 use Stevebauman\Viewer\Traits\ViewableTrait;
-use Stevebauman\CalendarHelper\Objects\AbstractApiObject;
 
 /**
  * Event class used for common objects between API drivers
@@ -12,6 +11,11 @@ class Event extends AbstractApiObject
 {
     use ViewableTrait;
 
+    /**
+     * Constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         $this->timeZone = config('app.timezone');
@@ -30,7 +34,9 @@ class Event extends AbstractApiObject
     }
 
     /**
-     * Converts an RRULE string to an array
+     * Converts the RRULE string property to an array
+     *
+     * @return void
      */
     public function rruleToAttributeArray()
     {
@@ -62,5 +68,4 @@ class Event extends AbstractApiObject
             }
         }
     }
-
 }

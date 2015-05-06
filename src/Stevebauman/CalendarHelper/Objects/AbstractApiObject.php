@@ -73,7 +73,7 @@ abstract class AbstractApiObject
      * 
      * @param string $key
      *
-     * @return boolean
+     * @return bool
      */
     public function isFillable($key)
     {

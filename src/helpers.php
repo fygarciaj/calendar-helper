@@ -20,8 +20,8 @@ if(! function_exists('strToRfc3339'))
      * is 'till' the 3rd.
      *
      * @param string $dateStr
-     * @param boolean $allDay
-     * @param boolean $isEnd
+     * @param bool $allDay
+     * @param bool $isEnd
      *
      * @return string
      */

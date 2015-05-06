@@ -124,7 +124,7 @@ class EventService extends Service
      * Updates the specified google calendar event
      *
      * @param string $id
-     * @return boolean
+     * @return bool
      */
     public function update($id)
     {
@@ -189,7 +189,7 @@ class EventService extends Service
      * Updates the start and end dates of the specified google calendar event
      *
      * @param string $id
-     * @return boolean
+     * @return bool
      */
     public function updateDates($id)
     {

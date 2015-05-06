@@ -3,10 +3,10 @@
 namespace Stevebauman\CalendarHelper\Drivers;
 
 use Stevebauman\CalendarHelper\Exceptions\KeyNotFoundException;
-use Illuminate\Filesystem\FileNotFoundException;
-use Illuminate\Support\Facades\File;
 use Stevebauman\CalendarHelper\Objects\Attendee;
 use Stevebauman\CalendarHelper\Objects\Event;
+use Illuminate\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class Google
@@ -15,54 +15,54 @@ use Stevebauman\CalendarHelper\Objects\Event;
 class Google implements DriverInterface
 {
     /*
-     * Holds the google client object
+     * Holds the google client object.
      *
-     * @var \GoogleClient
+     * @var \Google_Client
      */
     private $client;
 
     /*
-     * Holds google service object
+     * Holds google service object.
      *
      * @var \Google_Service_Calendar
      */
     private $service;
 
     /*
-     * Holds the google client api key
+     * Holds the google client api key.
      *
      * @var string
      */
     private $clientId;
 
     /*
-     * Holds the google application name
+     * Holds the google application name.
      *
      * @var string
      */
     private $applicationName;
 
     /*
-     * Holds the google service account name
+     * Holds the google service account name.
      *
      * @var string
      */
     private $serviceAccountName;
 
     /*
-     * Holds the google calendar ID
+     * Holds the google calendar ID.
      *
      * @var string
      */
     private $calendarId;
 
     /*
-     * Holds the cert location
+     * Holds the cert location.
      */
     private $key;
 
     /*
-     * Holds the google api scopes
+     * Holds the google api scopes.
      *
      * @var array
      */
@@ -131,7 +131,6 @@ class Google implements DriverInterface
          */
         $this->service = new \Google_Service_Calendar($this->client);
     }
-
 
     /**
      * Overrides the default calendar id.
@@ -424,7 +423,7 @@ class Google implements DriverInterface
      *
      * @param string $eventId
      *
-     * @return boolean
+     * @return bool
      */
     public function deleteEvent($eventId)
     {
@@ -538,7 +537,7 @@ class Google implements DriverInterface
      *
      * @param string $dateTime
      * @param string $timeZone
-     * @param boolean $allDay
+     * @param bool $allDay
      *
      * @return \Google_Service_Calendar_EventDateTime
      */
