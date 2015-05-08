@@ -3,7 +3,7 @@
 /*
  * Driver Configuration
  */
-return array(
+return [
     
     /*
      * Process for Google Calendar:
@@ -14,7 +14,7 @@ return array(
      * - Enable Calendar API
      * - Go to Calendar UI and share calendar using service account name
      */
-    'google' => array(
+    'google' => [
         
         'default_calendar_id' => 'primary',
         
@@ -26,13 +26,13 @@ return array(
         
         'key' => 'file_path',
         
-        'scopes' => array(
+        'scopes' => [
             'https://www.googleapis.com/auth/calendar',
-        ),
-        
-    ),
+        ],
+
+    ],
     
-    'event' => array(
+    'event' => [
 
         /*
          * Optional viewer class
@@ -42,26 +42,26 @@ return array(
         /*
          * Default event attributes with their default value
          */
-        'attributes' => array(
+        'attributes' => [
             'calendar_id' => '',
             'id' => '',
             'parent_id' => '',
             'title' => '',
             'description' => '',
             'location' => '',
-            'attendees' => array(),
+            'attendees' => [],
             'start' => '',
             'end' => '',
             'all_day' => false,
             'status' => '',
             'timeZone' => '',
             'rrule' => '',
-            'rruleArray' => array(),
+            'rruleArray' => [],
             'isRecurrence' => false,
-        ),
-    ),
+        ],
+    ],
     
-    'attendee' => array(
+    'attendee' => [
 
         /*
          * Optional viewer class
@@ -71,13 +71,13 @@ return array(
         /*
          * Default attendee attributes with their default value
          */
-        'attributes' => array(
+        'attributes' => [
             'id' => '',
             'name' => '',
             'email' => '',
             'comment' => '',
             'status' => '',
-        )
-    ),
-    
-);
+        ]
+    ],
+
+];
