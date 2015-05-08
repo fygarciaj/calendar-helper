@@ -2,6 +2,7 @@
 
 namespace Stevebauman\CalendarHelper\Drivers;
 
+use Stevebauman\CalendarHelper\CalendarHelper;
 use Stevebauman\CalendarHelper\Exceptions\KeyNotFoundException;
 use Stevebauman\CalendarHelper\Objects\Attendee;
 use Stevebauman\CalendarHelper\Objects\Event;
@@ -14,6 +15,13 @@ use Illuminate\Support\Facades\File;
  */
 class Google implements DriverInterface
 {
+    /**
+     * Holds the current calendar helper instance.
+     *
+     * @var CalendarHelper
+     */
+    protected $calendarHelper;
+
     /*
      * Holds the google client object.
      *
@@ -72,22 +80,26 @@ class Google implements DriverInterface
      * Constructor.
      *
      * @throws KeyNotFoundException
+     *
+     * @param CalendarHelper $calendarHelper
      */
-    public function __construct()
+    public function __construct(CalendarHelper $calendarHelper)
     {
-        $this->calendarId = config('calendar-helper::google.default_calendar_id');
-        $this->clientId = config('calendar-helper::google.client_id');
-        $this->applicationName = config('calendar-helper::google.application_name');
-        $this->serviceAccountName = config('calendar-helper::google.service_account_name');
-        $this->scopes = config('calendar-helper::google.scopes');
+        $this->calendarHelper = $calendarHelper;
+
+        $this->calendarId = $this->calendarHelper->getConfig('google.default_calendar_id');
+        $this->clientId = $this->calendarHelper->getConfig('google.client_id');
+        $this->applicationName = $this->calendarHelper->getConfig('google.application_name');
+        $this->serviceAccountName = $this->calendarHelper->getConfig('google.service_account_name');
+        $this->scopes = $this->calendarHelper->getConfig('google.scopes');
 
         try
         {
-            $this->key = File::get(config('calendar-helper::google.key'));
+            $this->key = File::get($this->calendarHelper->getConfig('google.key'));
         } catch(FileNotFoundException $e)
         {
             $message = trans('calendar-helper::exceptions.KeyNotFoundException', [
-                'path' => config('calendar-helper::google.key'),
+                'path' => $this->calendarHelper->getConfig('google.key'),
             ]);
 
             throw new KeyNotFoundException($message);

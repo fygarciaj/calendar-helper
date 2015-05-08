@@ -2,6 +2,7 @@
 
 namespace Stevebauman\CalendarHelper\Objects;
 
+use Stevebauman\CalendarHelper\CalendarHelperServiceProvider;
 use Stevebauman\Viewer\Traits\ViewableTrait;
 
 /**
@@ -20,9 +21,9 @@ class Event extends AbstractApiObject
     {
         $this->timeZone = config('app.timezone');
 
-        $this->viewer = config('calendar-helper::event.viewer');
+        $this->viewer = config('calendar-helper'.CalendarHelperServiceProvider::$configSeparator.'event.viewer');
 
-        $this->fillable = config('calendar-helper::event.attributes');
+        $this->fillable = config('calendar-helper'.CalendarHelperServiceProvider::$configSeparator.'event.attributes');
 
         $this->fill($attributes);
 

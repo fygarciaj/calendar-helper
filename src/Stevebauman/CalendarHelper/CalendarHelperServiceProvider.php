@@ -17,15 +17,30 @@ class CalendarHelperServiceProvider extends ServiceProvider
 	 */
 	protected $defer = false;
 
-	/**
-	 * Register the package in the boot method https://github.com/laravel/framework/issues/6
-	 */
-	public function boot()
-	{
-		$this->package('stevebauman/calendar-helper');
+    /**
+     * The configuration separator for packages.
+     * Allows compatibility with Laravel 4 and 5
+     *
+     * @var string
+     */
+    public static $configSeparator = '::';
 
-		parent::boot();
-	}
+    public function boot()
+    {
+        if(method_exists($this, 'package')) {
+            $this->package('stevebauman/calendar-helper');
+        } else {
+            $this::$configSeparator = '.';
+
+            $this->publishes([
+                __DIR__ . '../../config/config.php' => config_path('calendar-helper.php'),
+            ], 'config');
+
+            $this->loadTranslationsFrom(__DIR__.'../../../lang', 'calendar-helper');
+        }
+
+        parent::boot();
+    }
 
 	/**
 	 * Register the service provider.
@@ -36,7 +51,7 @@ class CalendarHelperServiceProvider extends ServiceProvider
 	{
 		$this->app['calendar-helper'] = $this->app->share(function($app)
 		{
-		    return new CalendarHelper;
+		    return new CalendarHelper($app['config']);
 		});
 
 		include __DIR__ .'/../../helpers.php';
