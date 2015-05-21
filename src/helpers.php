@@ -4,8 +4,7 @@
  * The Calendar Helpers File.
  */
 
-if(! function_exists('strToRfc3339'))
-{
+if (!function_exists('strToRfc3339')) {
     /**
      * Converts a date string into RFC3339 format for google calendar api.
      * This is used for start/end dates for the creation/modification of events.
@@ -20,8 +19,8 @@ if(! function_exists('strToRfc3339'))
      * is 'till' the 3rd.
      *
      * @param string $dateStr
-     * @param bool $allDay
-     * @param bool $isEnd
+     * @param bool   $allDay
+     * @param bool   $isEnd
      *
      * @return string
      */
@@ -32,7 +31,7 @@ if(! function_exists('strToRfc3339'))
         /*
          * Check if the date is already in unix time or not
          */
-        if(isValidTimeStamp($dateStr)) {
+        if (isValidTimeStamp($dateStr)) {
             $date->setTimestamp($dateStr);
         } else {
             $date->setTimestamp(strtotime($dateStr));
@@ -42,9 +41,8 @@ if(! function_exists('strToRfc3339'))
          * If the event is all day, google only accepts Y-m-d formats instead
          * of RFC3339
          */
-        if($allDay) {
-
-            if($isEnd) {
+        if ($allDay) {
+            if ($isEnd) {
                 $date->add(new \DateInterval('P1D'));
             }
 
@@ -55,8 +53,7 @@ if(! function_exists('strToRfc3339'))
     }
 }
 
-if(! function_exists('strToRfc2445'))
-{
+if (!function_exists('strToRfc2445')) {
     /**
      * Converts a date string into RFC2445 format for google
      * calendar api. This is used for recurrence rule dates.
@@ -75,18 +72,18 @@ if(! function_exists('strToRfc2445'))
     }
 }
 
-if(! function_exists('isValidTimeStamp'))
-{
+if (!function_exists('isValidTimeStamp')) {
     /**
      * Checks if the inputted integer
      * timestamp is a valid unix timestamp.
      *
      * @param $timestamp
+     *
      * @return bool
      */
     function isValidTimeStamp($timestamp)
     {
-        return ((int) $timestamp === $timestamp) 
+        return ((int) $timestamp === $timestamp)
             && ($timestamp <= PHP_INT_MAX)
             && ($timestamp >= ~PHP_INT_MAX);
     }

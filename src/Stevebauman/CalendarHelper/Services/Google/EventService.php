@@ -9,10 +9,9 @@ use Stevebauman\CalendarHelper\CalendarHelper;
 use Stevebauman\CoreHelper\Services\Service;
 
 /**
- * Handles Google Calendar Events much like the typical model services
+ * Handles Google Calendar Events much like the typical model services.
  *
  * Class EventService
- * @package Stevebauman\CalendarHelper\Services\Google
  */
 class EventService extends Service
 {
@@ -25,9 +24,10 @@ class EventService extends Service
     }
 
     /**
-     * Sets the Google Calendar to perform operations on
+     * Sets the Google Calendar to perform operations on.
      *
      * @param string $id
+     *
      * @return $this
      */
     public function setCalendar($id)
@@ -36,7 +36,7 @@ class EventService extends Service
     }
 
     /**
-     * Returns a google collection of all events from the inputted filter
+     * Returns a google collection of all events from the inputted filter.
      *
      * @return mixed
      */
@@ -47,11 +47,11 @@ class EventService extends Service
         return new $this->collection($events);
     }
 
-
     /**
-     * Returns recurrences of the specified ID
+     * Returns recurrences of the specified ID.
      *
      * @param string $id
+     *
      * @return mixed
      */
     public function getRecurrences($id)
@@ -62,7 +62,7 @@ class EventService extends Service
     }
 
     /**
-     * Creates a google batch request for specific event ID's
+     * Creates a google batch request for specific event ID's.
      *
      * @param array $ids
      *
@@ -73,18 +73,16 @@ class EventService extends Service
         $events = $this->calendar->specificEvents($ids, $recurrences, $this->getRecurringEventsFilter());
 
         foreach ($events as &$event) {
-
             if ($event->attendees) {
                 $event->attendees = new $this->collection($event->attendees);
             }
-
         }
 
         return new $this->collection($events);
     }
 
     /**
-     * Creates a new google calendar event
+     * Creates a new google calendar event.
      *
      * @return Event
      */
@@ -98,8 +96,8 @@ class EventService extends Service
         /*
          * Combine dates with their times
          */
-        $start = $this->getInput('start_date') . ' ' . $this->getInput('start_time');
-        $end = $this->getInput('end_date') . ' ' . $this->getInput('end_time');
+        $start = $this->getInput('start_date').' '.$this->getInput('start_time');
+        $end = $this->getInput('end_date').' '.$this->getInput('end_time');
 
         if ($this->getInput('all_day') === 'true') {
             $allDay = true;
@@ -113,17 +111,17 @@ class EventService extends Service
             'start' => strToRfc3339($start, $allDay),
             'end' => strToRfc3339($end, $allDay, true),
             'all_day' => $allDay,
-            'rrule' => $rrule
+            'rrule' => $rrule,
         ]);
 
         return $this->calendar->createEvent($event);
     }
 
-
     /**
-     * Updates the specified google calendar event
+     * Updates the specified google calendar event.
      *
      * @param string $id
+     *
      * @return bool
      */
     public function update($id)
@@ -140,8 +138,8 @@ class EventService extends Service
             /*
              * Combine dates with their times
              */
-            $start = $this->getInput('start_date') . ' ' . $this->getInput('start_time');
-            $end = $this->getInput('end_date') . ' ' . $this->getInput('end_time');
+            $start = $this->getInput('start_date').' '.$this->getInput('start_time');
+            $end = $this->getInput('end_date').' '.$this->getInput('end_time');
 
             $allDay = $this->getInput('all_day');
 
@@ -157,17 +155,16 @@ class EventService extends Service
             $event->rrule = $rrule;
 
             return $this->calendar->updateEvent($event);
-
         }
 
         return false;
-
     }
 
     /**
-     * Returns the specified google calendar event
+     * Returns the specified google calendar event.
      *
      * @param string $id
+     *
      * @return mixed
      */
     public function find($id)
@@ -175,20 +172,19 @@ class EventService extends Service
         $event = $this->calendar->event($id);
 
         if ($event->status !== 'cancelled') {
-
             $event->attendees = new $this->collection($event->attendees);
 
             return $event;
-
         }
 
         return false;
     }
 
     /**
-     * Updates the start and end dates of the specified google calendar event
+     * Updates the start and end dates of the specified google calendar event.
      *
      * @param string $id
+     *
      * @return bool
      */
     public function updateDates($id)
@@ -196,7 +192,6 @@ class EventService extends Service
         $event = $this->find($id);
 
         if ($event) {
-
             $allDay = false;
 
             if ($this->getInput('all_day') === 'true') {
@@ -219,16 +214,12 @@ class EventService extends Service
              * If google event is all day, dateTime attribute will be NULL
              */
             if (!$allDay) {
-
                 $start = $startDate->format(\DateTime::RFC3339);
                 $end = $endDate->format(\DateTime::RFC3339);
-
             } else {
-
                 $start = $startDate->format('Y-m-d');
 
                 $end = $endDate->format('Y-m-d');
-
             }
 
             /*
@@ -242,16 +233,16 @@ class EventService extends Service
              * Update and return the new event
              */
             return $this->calendar->updateEvent($event);
-
         }
 
         return false;
     }
 
     /**
-     * Deletes the specified google calendar event
+     * Deletes the specified google calendar event.
      *
      * @param string $id
+     *
      * @return type
      */
     public function destroy($id)
@@ -260,7 +251,7 @@ class EventService extends Service
     }
 
     /**
-     * Returns a google api RRULE compatible array
+     * Returns a google api RRULE compatible array.
      *
      * @return array
      */
@@ -273,16 +264,16 @@ class EventService extends Service
         */
         $arrayRule = [
             'FREQ' => $this->getInput('recur_frequency'),
-            'BYDAY' => ($this->getInput('recur_days') ? $this->implodeArrayForRule($this->getInput('recur_days')) : NULL),
-            'BYMONTH' => ($this->getInput('recur_months') ? $this->implodeArrayForRule($this->getInput('recur_months')) : NULL),
-            'UNTIL' => ($this->getInput('recur_until') ? strToRfc2445($this->getInput('recur_until')) : NULL),
+            'BYDAY' => ($this->getInput('recur_days') ? $this->implodeArrayForRule($this->getInput('recur_days')) : null),
+            'BYMONTH' => ($this->getInput('recur_months') ? $this->implodeArrayForRule($this->getInput('recur_months')) : null),
+            'UNTIL' => ($this->getInput('recur_until') ? strToRfc2445($this->getInput('recur_until')) : null),
         ];
 
         return $arrayRule;
     }
 
     /**
-     * Returns a base event filter for google API
+     * Returns a base event filter for google API.
      *
      * @return array
      */
@@ -302,7 +293,7 @@ class EventService extends Service
     }
 
     /**
-     * Returns param array for querying google events
+     * Returns param array for querying google events.
      *
      * @return array
      */
@@ -317,7 +308,7 @@ class EventService extends Service
     }
 
     /**
-     * Returns param array for querying google event recurrences
+     * Returns param array for querying google event recurrences.
      *
      * @return array
      */
@@ -332,10 +323,9 @@ class EventService extends Service
 
     /**
      * Converts an array from the multi-select inputs to a comma seperated list
-     * for use in the RRule rule string
+     * for use in the RRule rule string.
      *
      * @param array $values
-     * @return null OR string
      */
     private function implodeArrayForRule(array $values = [])
     {
@@ -346,16 +336,17 @@ class EventService extends Service
          * Ex. array(0 => 'MO', 1 => 'TU', 2 => 'WE') = 'MO,TU,WE'
          */
         if (isset($values) && is_array($values)) {
-            return implode(",", $values);
+            return implode(',', $values);
         }
 
-        return NULL;
+        return;
     }
 
     /**
-     * Converts an array of recurring event rules to an RRULE string
+     * Converts an array of recurring event rules to an RRULE string.
      *
      * @param array $rules
+     *
      * @return string
      */
     private function arrayToRRule(array $rules = [])
@@ -366,7 +357,6 @@ class EventService extends Service
          * If rules exist in the array
          */
         if (count($rules) > 0) {
-
             foreach ($rules as $rule => $value) {
 
                 /*
@@ -377,8 +367,7 @@ class EventService extends Service
                     /*
                      * Add the rule onto the string
                      */
-                    $ruleString .= strtoupper($rule) . '=' . $value . ';';
-
+                    $ruleString .= strtoupper($rule).'='.$value.';';
                 }
             }
 
@@ -387,12 +376,10 @@ class EventService extends Service
              * by checking the length. If there are, add the required RRULE prefix
              */
             if (strlen($ruleString) > 0) {
-                $ruleString = 'RRULE:' . $ruleString;
+                $ruleString = 'RRULE:'.$ruleString;
             }
-
         }
 
         return $ruleString;
     }
-
 }

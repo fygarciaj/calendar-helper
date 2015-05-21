@@ -4,10 +4,10 @@
  * Driver Configuration
  */
 return [
-    
+
     /*
      * Process for Google Calendar:
-     * 
+     *
      * - Create Google Account
      * - Go to Google Developer API Console
      * - Create Project
@@ -15,30 +15,30 @@ return [
      * - Go to Calendar UI and share calendar using service account name
      */
     'google' => [
-        
+
         'default_calendar_id' => 'primary',
-        
+
         'client_id' => '',
-        
+
         'service_account_name' => '',
-        
+
         'application_name' => '',
-        
+
         'key' => 'file_path',
-        
+
         'scopes' => [
             'https://www.googleapis.com/auth/calendar',
         ],
 
     ],
-    
+
     'event' => [
 
         /*
          * Optional viewer class
          */
         'viewer' => 'EventViewer',
-        
+
         /*
          * Default event attributes with their default value
          */
@@ -60,14 +60,14 @@ return [
             'isRecurrence' => false,
         ],
     ],
-    
+
     'attendee' => [
 
         /*
          * Optional viewer class
          */
         'viewer' => 'AttendeeViewer',
-        
+
         /*
          * Default attendee attributes with their default value
          */
@@ -77,7 +77,7 @@ return [
             'email' => '',
             'comment' => '',
             'status' => '',
-        ]
+        ],
     ],
 
 ];

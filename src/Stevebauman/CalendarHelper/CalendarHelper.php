@@ -6,7 +6,7 @@ use Illuminate\Config\Repository;
 use Stevebauman\CalendarHelper\Drivers\Google;
 
 /**
- * Class CalendarHelper
+ * Class CalendarHelper.
  */
 class CalendarHelper
 {
