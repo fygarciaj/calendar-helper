@@ -32,7 +32,6 @@ class CalendarHelperServiceProvider extends ServiceProvider
             $this::$configSeparator = '.';
 
             $this->publishes([
-                __DIR__.'../../config/config.php' => config_path('calendar-helper.php'),
             ], 'config');
 
             $this->loadTranslationsFrom(__DIR__.'../../../lang', 'calendar-helper');
