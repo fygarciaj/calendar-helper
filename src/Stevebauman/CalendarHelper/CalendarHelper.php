@@ -2,7 +2,7 @@
 
 namespace Stevebauman\CalendarHelper;
 
-use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config\Repository;
 use Stevebauman\CalendarHelper\Drivers\Google;
 
 /**
